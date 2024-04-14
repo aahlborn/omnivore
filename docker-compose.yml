@@ -85,6 +85,15 @@ services:
       api:
         condition: service_healthy
 
+  redis:
+    image: redis:latest
+    container_name: omnivore-redis
+    healthcheck:
+      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
+      interval: 15s
+      timeout: 90s
+    restart: always
+
   content-fetch:
     build:
       context: .
@@ -96,6 +105,9 @@ services:
       - JWT_SECRET=some_secret
       - VERIFICATION_TOKEN=some_token
       - REST_BACKEND_ENDPOINT=http://api:8080/api
+      - REDIS_URL=redis://omnivore-redis:6379    
     depends_on:
       api:
+        condition: service_healthy
+      redis:
         condition: service_healthy
