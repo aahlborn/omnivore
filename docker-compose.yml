@@ -95,9 +95,11 @@ services:
     restart: always
 
   content-fetch:
-    build:
-      context: .
-      dockerfile: ./packages/content-fetch/Dockerfile
+    # use content-fetch built from commit e44616b01d863407b0e3fd33b7f990343e0f6139 (pre-redis)
+    image: dc6477a654798ded42160262d18873b2986603bb8bae9e23b5a25e9933d5c13b
+    # build:
+    #   context: .
+    #   dockerfile: ./packages/content-fetch/Dockerfile
     container_name: "omnivore-content-fetch"
     ports:
       - "9090:8080"
